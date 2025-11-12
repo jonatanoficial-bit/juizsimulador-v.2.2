@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Jogo do Juiz 2.6 — Vale Produção</title>
+<title>Jogo do Juiz 2.7 — Vale Produção</title>
 <style>
   :root{
     --bg:#0b0b0d; --panel:#141419; --muted:#8b90a0; --text:#f4f6fb;
@@ -16,34 +16,55 @@
   button,input,select,textarea{font:inherit}
   .wrap{max-width:1120px;margin:0 auto;padding:20px}
   .btn{border:0;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;color:#fff;background:#ffffff22}
-  .btn:hover{background:#ffffff35} .btn.ok{background:var(--brand);color:#032}
-  .btn.danger{background:var(--danger);color:#200} .btn.warn{background:var(--warn);color:#332100}
+  .btn:hover{background:#ffffff35}
+  .btn.ok{background:var(--brand);color:#032}
+  .btn.danger{background:var(--danger);color:#200}
+  .btn.warn{background:var(--warn);color:#332100}
   .btn.ghost{background:#ffffff10}
   .card{background:var(--panel);border:1px solid #ffffff18;border-radius:16px;padding:16px}
-  .grid{display:grid;gap:16px} .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{display:grid;gap:16px}
+  .grid-2{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid-3{grid-template-columns:repeat(3,minmax(0,1fr))}
-  .title{font-size:28px;font-weight:800;letter-spacing:-0.02em} .muted{color:var(--muted)}
+  .title{font-size:28px;font-weight:800;letter-spacing:-0.02em}
+  .muted{color:var(--muted)}
   .pill{display:inline-block;background:#ffffff14;border:1px solid #ffffff22;border-radius:999px;padding:4px 10px;font-size:12px}
   .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .list{display:flex;flex-direction:column;gap:12px;max-height:420px;overflow:auto;padding-right:6px}
-  .progress{height:8px;background:#ffffff14;border-radius:999px;overflow:hidden}.progress>span{display:block;height:100%;background:var(--accent)}
+  .progress{height:8px;background:#ffffff14;border-radius:999px;overflow:hidden}
+  .progress>span{display:block;height:100%;background:var(--accent)}
   .avatar{width:56px;height:56px;border-radius:12px;overflow:hidden;border:2px solid #ffffff44;background:#ffffff18;display:grid;place-items:center}
   .avatar-lg{width:100%;max-width:240px;border-radius:14px;border:1px solid #ffffff33}
 
-  /* Telas sem imagem */
-  .bg-hero{background:radial-gradient(1000px 500px at 50% -10%,#ffffff22,transparent),linear-gradient(180deg,#0b0b0d 0%,#0b0b0d 20%,#0b0b0d 100%);min-height:100vh;display:grid;place-items:center;text-align:center}
+  /* Tela de login / splash */
+  .bg-hero{
+    background:radial-gradient(1000px 500px at 50% -10%,#ffffff22,transparent),
+               linear-gradient(180deg,#0b0b0d 0%,#0b0b0d 20%,#0b0b0d 100%);
+    min-height:100vh;
+    display:grid;
+    place-items:center;
+    text-align:center;
+  }
 
-  /* Fundos com foto local */
-  .bg-photo{min-height:100vh;position:relative;background:#0b0b0d center/cover no-repeat}
-  .bgfx{position:absolute;inset:0;pointer-events:none;
-        background:
-        radial-gradient(1100px 600px at 50% 0%, rgba(0,0,0,.55), transparent 60%),
-        linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.75));}
+  /* Fundos com imagem local */
+  .bg-photo{
+    min-height:100vh;
+    position:relative;
+    background:#0b0b0d center/cover no-repeat;
+  }
+  .bgfx{
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background:
+      radial-gradient(1100px 600px at 50% 0%, rgba(0,0,0,.55), transparent 60%),
+      linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.75));
+  }
 
   /* SafeBoot */
   .safe-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(180deg,#0b0b0d,#141419);z-index:9999}
   .safe-card{max-width:720px;background:#141419;border:1px solid #ffffff22;border-radius:16px;padding:20px;text-align:center}
-  .safe-ok{color:#42e6a4;font-weight:700;margin-top:6px} .safe-err{color:#ff5d7a;white-space:pre-wrap;margin-top:10px}
+  .safe-ok{color:#42e6a4;font-weight:700;margin-top:6px}
+  .safe-err{color:#ff5d7a;white-space:pre-wrap;margin-top:10px}
 
   /* Chat / Júri */
   .chat{display:flex;flex-direction:column;gap:10px}
@@ -55,11 +76,15 @@
   .msg small{display:block;color:#8da1c0;margin-bottom:2px}
   .typing{border-right:2px solid #8da1c0;animation:blink .8s steps(1) infinite}
   @keyframes blink{50%{border-color:transparent}}
+
   .jury{display:grid;grid-template-columns:repeat(6, minmax(0,1fr));gap:8px}
   .juror{background:#ffffff12;border:1px solid #ffffff22;border-radius:10px;padding:8px}
   .bar{height:6px;background:#ffffff14;border-radius:999px;overflow:hidden;margin-top:4px}
   .bar>span{display:block;height:100%}
-  @media (max-width:960px){.grid-2,.grid-3{grid-template-columns:1fr}}
+
+  @media (max-width:960px){
+    .grid-2,.grid-3{grid-template-columns:1fr}
+  }
 </style>
 </head>
 <body>
@@ -68,7 +93,7 @@
 <div id="safeboot" class="safe-wrap" aria-live="polite">
   <div class="safe-card">
     <div class="pill">Vale Produção</div>
-    <h1 style="margin:.4em 0 0">Jogo do Juiz 2.6</h1>
+    <h1 style="margin:.4em 0 0">Jogo do Juiz 2.7</h1>
     <div id="safe-status" class="muted">Inicializando…</div>
     <div id="safe-msg" class="safe-ok"></div>
     <div id="safe-err" class="safe-err"></div>
@@ -90,7 +115,10 @@
     if(!window.localStorage) throw new Error("localStorage indisponível.");
     set('safe-status',"Ambiente OK. Montando UI…");
     setTimeout(()=>{ const x=document.getElementById('safeboot'); if(x) x.style.display='none'; }, 900);
-  }catch(e){ set('safe-status',"Falha ao iniciar."); set('safe-err', e.message||String(e)); }
+  }catch(e){
+    set('safe-status',"Falha ao iniciar.");
+    set('safe-err', e.message||String(e));
+  }
 })();
 </script>
 
@@ -99,32 +127,46 @@
 (function(){
 "use strict";
 
-/* >>> IMAGENS LOCAIS EM PNG <<< */
-const IMG_OFFICE = "img/office.png";
-const IMG_COURT  = "img/court.png";
+/* >>> IMAGENS LOCAIS (iguais às do GitHub) <<< */
+const IMG_OFFICE   = "img/escritorio.png";
+const IMG_COURT    = "img/tribunal.png";
+const IMG_STJ      = "img/stj.png";        // usado quando prestígio alto (STJ)
 
-/* Utils */
+/* Utilidades */
 const $ = sel => document.querySelector(sel);
-const el = (tag, props={}, kids=[]) => { const n=document.createElement(tag);
-  for (const k in props){ if(k==='class') n.className=props[k];
+const el = (tag, props={}, kids=[]) => {
+  const n=document.createElement(tag);
+  for (const k in props){
+    if(k==='class') n.className=props[k];
     else if(k.startsWith('on')) n.addEventListener(k.slice(2).toLowerCase(), props[k]);
     else if(k==='html') n.innerHTML=props[k];
     else if(k==='style') n.style.cssText=props[k];
-    else n.setAttribute(k, props[k]); }
-  (Array.isArray(kids)?kids:[kids]).filter(Boolean).forEach(k=>n.appendChild(typeof k==='string'?document.createTextNode(k):k));
+    else n.setAttribute(k, props[k]);
+  }
+  (Array.isArray(kids)?kids:[kids]).filter(Boolean)
+    .forEach(k=>n.appendChild(typeof k==='string'?document.createTextNode(k):k));
   return n;
 };
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const sleep=(ms)=>new Promise(r=>setTimeout(r,ms));
 async function hash(text){
-  try{ const enc=new TextEncoder().encode(text); const buf=await crypto.subtle.digest('SHA-256',enc);
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join(''); }catch(_){
-    let h=0; for(let i=0;i<text.length;i++){h=((h<<5)-h)+text.charCodeAt(i); h|=0;} return String(h);
+  try{
+    const enc=new TextEncoder().encode(text);
+    const buf=await crypto.subtle.digest('SHA-256',enc);
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }catch(_){
+    let h=0; for(let i=0;i<text.length;i++){h=((h<<5)-h)+text.charCodeAt(i); h|=0;}
+    return String(h);
   }
 }
 
 /* Dados base */
-const ESTADOS={"SP":["São Paulo","Campinas","Santos","Sorocaba"],"RJ":["Rio de Janeiro","Niterói","Petrópolis"],"MG":["Belo Horizonte","Uberlândia","Juiz de Fora"],"BA":["Salvador","Feira de Santana","Vitória da Conquista"]};
+const ESTADOS={
+  "SP":["São Paulo","Campinas","Santos","Sorocaba"],
+  "RJ":["Rio de Janeiro","Niterói","Petrópolis"],
+  "MG":["Belo Horizonte","Uberlândia","Juiz de Fora"],
+  "BA":["Salvador","Feira de Santana","Vitória da Conquista"]
+};
 const COURT_TYPES=[
   {id:"criminal",icon:"⚖️",title:"Criminal",desc:"Crimes contra a pessoa e patrimônio. Júri popular em crimes dolosos contra a vida."},
   {id:"familia",icon:"👨‍👩‍👧",title:"Família",desc:"Divórcios, guarda, pensão, adoção, medidas protetivas e acordos."},
@@ -134,21 +176,37 @@ const COURT_TYPES=[
 /* Casos */
 function seedCases(n=100){
   const out=[], tipos=["criminal","familia","trabalhista"];
-  const C=[{t:"Homicídio simples em briga de bar",r:"Discussão escalou; réu alega legítima defesa.",g:{culpado:true,padrao:"alem_duvida"}},
-           {t:"Roubo com simulacro de arma",r:"Vítima diz que viu arma; simulacro próximo.",g:{culpado:true,padrao:"alem_duvida"}},
-           {t:"Tentativa de furto",r:"Réu surpreendido arrombando comércio.",g:{culpado:true,padrao:"alem_duvida"}},
-           {t:"Lesão corporal (doméstica)",r:"Vítima com escoriações; réu alega acidente.",g:{culpado:true,padrao:"alem_duvida"}}];
-  const F=[{t:"Guarda compartilhada",r:"Pais divergem sobre residência da criança.",g:{culpado:false,padrao:"preponderancia"}},
-           {t:"Revisão de pensão",r:"Genitor alega queda de renda.",g:{culpado:false,padrao:"preponderancia"}},
-           {t:"Regulamentação de visitas",r:"Conflito sobre pernoites e feriados.",g:{culpado:false,padrao:"preponderancia"}}];
-  const T=[{t:"Horas extras",r:"Alega 2h extras/dia; empresa fala em banco de horas.",g:{culpado:false,padrao:"preponderancia"}},
-           {t:"Vínculo x PJ",r:"Atuou como PJ; alega subordinação.",g:{culpado:false,padrao:"preponderancia"}},
-           {t:"Assédio moral",r:"Relata humilhações; empresa nega.",g:{culpado:false,padrao:"preponderancia"}}];
+  const C=[
+    {t:"Homicídio simples em briga de bar",r:"Discussão escalou; réu alega legítima defesa.",g:{culpado:true,padrao:"alem_duvida"}},
+    {t:"Roubo com simulacro de arma",r:"Vítima diz que viu arma; simulacro foi encontrado próximo.",g:{culpado:true,padrao:"alem_duvida"}},
+    {t:"Tentativa de furto qualificado",r:"Réu surpreendido arrombando comércio.",g:{culpado:true,padrao:"alem_duvida"}},
+    {t:"Lesão corporal em contexto doméstico",r:"Vítima com escoriações; réu alega acidente.",g:{culpado:true,padrao:"alem_duvida"}}
+  ];
+  const F=[
+    {t:"Guarda compartilhada",r:"Pais divergem sobre residência da criança.",g:{culpado:false,padrao:"preponderancia"}},
+    {t:"Revisão de pensão alimentícia",r:"Genitor alega redução de renda.",g:{culpado:false,padrao:"preponderancia"}},
+    {t:"Regulamentação de visitas",r:"Conflito sobre pernoites e feriados.",g:{culpado:false,padrao:"preponderancia"}}
+  ];
+  const T=[
+    {t:"Horas extras e intervalo",r:"Alega 2h extras/dia; empresa fala em banco de horas.",g:{culpado:false,padrao:"preponderancia"}},
+    {t:"Vínculo de emprego x PJ",r:"Atuou como PJ; alega subordinação.",g:{culpado:false,padrao:"preponderancia"}},
+    {t:"Dano moral por assédio",r:"Relata humilhações; empresa nega.",g:{culpado:false,padrao:"preponderancia"}}
+  ];
   for(let i=0;i<n;i++){
-    const tipo=tipos[i%3]; const base=(tipo==="criminal"?C:tipo==="familia"?F:T)[i%3];
-    out.push({id:tipo[0]+String(i+1).padStart(3,"0"),tipo,titulo:base.t,resumo:base.r,gabarito:base.g,status:"na_fila",
-      provas:[{id:"E1",tipo:"depoimento",conteudo:"Prova 1 contextual"},
-              {id:"E2",tipo:"documento",conteudo:"Prova 2 objetiva"}]});
+    const tipo=tipos[i%3];
+    const base=(tipo==="criminal"?C:tipo==="familia"?F:T)[i%3];
+    out.push({
+      id:tipo[0]+String(i+1).padStart(3,"0"),
+      tipo,
+      titulo:base.t,
+      resumo:base.r,
+      gabarito:base.g,
+      status:"na_fila",
+      provas:[
+        {id:"E1",tipo:"depoimento",conteudo:"Prova 1 contextual"},
+        {id:"E2",tipo:"documento",conteudo:"Prova 2 objetiva"}
+      ]
+    });
   }
   return out;
 }
@@ -170,8 +228,8 @@ function iaFala(agente, caso, pergunta=""){
 
 /* Typewriter */
 async function typeInto(node, full, speed=12){
-  node.innerHTML = "";
-  let out = "";
+  node.innerHTML="";
+  let out="";
   for(let i=0;i<full.length;i++){
     out += full[i];
     node.textContent = out;
@@ -187,27 +245,44 @@ async function keyFor(u){return SAVE_PREFIX+u;}
 async function saveGame(){
   if(!State.user) return;
   const key=await keyFor(State.user);
-  const payload=JSON.stringify({user:State.user,pass:State.passHash||null,when:Date.now(),
-    data:{scr:State.scr,court:State.court,nome:State.nome,idade:State.idade,
-          estado:State.estado,cidade:State.cidade,avatar:State.avatar,
-          casos:State.casos,fila:State.fila,atual:State.atual,julgando:State.julgando,stats:State.stats, sounds:State.sounds}});
+  const payload=JSON.stringify({
+    user:State.user,
+    pass:State.passHash||null,
+    when:Date.now(),
+    data:{
+      scr:State.scr,court:State.court,nome:State.nome,idade:State.idade,
+      estado:State.estado,cidade:State.cidade,avatar:State.avatar,
+      casos:State.casos,fila:State.fila,atual:State.atual,julgando:State.julgando,
+      stats:State.stats,sounds:State.sounds
+    }
+  });
   localStorage.setItem(key,payload);
 }
 async function loadGame(u){
-  const key=await keyFor(u); const raw=localStorage.getItem(key);
-  if(!raw) return null; try{return JSON.parse(raw);}catch(_){return null;}
+  const key=await keyFor(u);
+  const raw=localStorage.getItem(key);
+  if(!raw) return null;
+  try{return JSON.parse(raw);}catch(_){return null;}
 }
 function exportGame(){
   if(!State.user){alert("Você precisa estar logado.");return;}
-  const blob=new Blob([localStorage.getItem(SAVE_PREFIX+State.user)||"{}"],{type:"application/json"});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`juiz_save_${State.user}.json`; a.click();
+  const key=SAVE_PREFIX+State.user;
+  const blob=new Blob([localStorage.getItem(key)||"{}"],{type:"application/json"});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`juiz_save_${State.user}.json`;
+  a.click();
 }
 function importGame(file){
   const r=new FileReader();
-  r.onload=()=>{try{const obj=JSON.parse(r.result);
-    if(!obj||!obj.data) return alert("Arquivo inválido.");
-    localStorage.setItem(SAVE_PREFIX+(obj.user||"player"), JSON.stringify(obj));
-    alert("Save importado! Faça login com o usuário do arquivo.");}catch(e){alert("Falha ao importar.");}};
+  r.onload=()=>{
+    try{
+      const obj=JSON.parse(r.result);
+      if(!obj||!obj.data) return alert("Arquivo inválido.");
+      localStorage.setItem(SAVE_PREFIX+(obj.user||"player"), JSON.stringify(obj));
+      alert("Save importado! Faça login com o usuário do arquivo.");
+    }catch(e){alert("Falha ao importar.");}
+  };
   r.readAsText(file);
 }
 
@@ -217,68 +292,107 @@ const State={
   court:null, avatar:null, nome:"", idade:"",
   estado:"SP", cidade:ESTADOS["SP"][0],
   casos:seedCases(), fila:[], atual:null, julgando:null,
-  stats:{j:0,a:0, prestigio:0},
+  stats:{j:0,a:0,prestigio:0},
   sounds:true, unlocked:false
 };
 
-/* Autosave */
+/* Bg helper: se prestígio alto, usa STJ no escritório */
+function currentOfficeBg(){
+  return (State.stats.prestigio||0) >= 70 ? IMG_STJ : IMG_OFFICE;
+}
+
+/* Autosave a cada 8s */
 setInterval(saveGame, 8000);
 
 /* Áudio — desbloqueio por gesto */
 function unlockAudioOnce(){
   if(State.unlocked) return;
   State.unlocked = true;
-  const amb=$("#s-amb"); try{amb.volume=0.35; State.sounds && amb.play();}catch(e){}
+  const amb=$("#s-amb");
+  try{
+    amb.volume=0.35;
+    if(State.sounds) amb.play();
+  }catch(e){}
 }
-document.addEventListener('click', unlockAudioOnce, {once:true});
-document.addEventListener('keydown', unlockAudioOnce, {once:true});
-function play(id,vol=0.7){ if(!State.sounds) return; const a=$(id); if(a){ a.volume=vol; a.currentTime=0; a.play(); } }
+document.addEventListener('click',unlockAudioOnce,{once:true});
+document.addEventListener('keydown',unlockAudioOnce,{once:true});
+function play(id,vol=0.7){
+  if(!State.sounds) return;
+  const a=$(id);
+  if(a){ a.volume=vol; a.currentTime=0; a.play(); }
+}
 function loopAmb(start){
-  const amb=$("#s-amb"); if(!amb) return;
-  if(start){ if(State.sounds && State.unlocked){ amb.volume=0.35; amb.play(); } }
-  else amb.pause();
+  const amb=$("#s-amb");
+  if(!amb) return;
+  if(start){
+    if(State.sounds && State.unlocked){ amb.volume=0.35; amb.play(); }
+  }else amb.pause();
 }
 
-/* Render */
+/* Render raiz */
 function render(){
   const root=$('#app'); root.innerHTML="";
   if(State.scr==="login") return root.appendChild(viewLogin());
   if(State.scr==="splash") return root.appendChild(viewSplash());
   if(State.scr==="home") return root.appendChild(viewHome());
   if(State.scr==="avatar") return root.appendChild(viewAvatar());
-  if(State.scr==="office") { loopAmb(true); return root.appendChild(viewOffice()); }
-  if(State.scr==="trial") { loopAmb(true); return root.appendChild(viewTrial()); }
+  if(State.scr==="office"){ loopAmb(true); return root.appendChild(viewOffice()); }
+  if(State.scr==="trial"){ loopAmb(true); return root.appendChild(viewTrial()); }
 }
 
 /* Views */
+
 function viewLogin(){
   const userInput=el('input',{placeholder:'Usuário',style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'});
   const passInput=el('input',{type:'password',placeholder:'Senha (opcional)',style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'});
   const knownUsers=Object.keys(localStorage).filter(k=>k.startsWith(SAVE_PREFIX)).map(k=>k.replace(SAVE_PREFIX,''));
+
   const login=async()=>{
-    const u=userInput.value.trim(); if(!u) return alert("Informe um usuário.");
+    const u=userInput.value.trim();
+    if(!u) return alert("Informe um usuário.");
     const exists=await loadGame(u);
-    if(!exists){ State.user=u; State.passHash=passInput.value?await hash(passInput.value):null;
-      State.court=null; State.avatar=null; State.nome=""; State.idade=""; State.estado="SP"; State.cidade=ESTADOS["SP"][0];
-      State.casos=seedCases(); State.fila=[]; State.atual=null; State.julgando=null; State.stats={j:0,a:0,prestigio:0}; State.sounds=true; State.unlocked=false;
+    if(!exists){
+      State.user=u;
+      State.passHash=passInput.value?await hash(passInput.value):null;
+      State.court=null; State.avatar=null; State.nome=""; State.idade="";
+      State.estado="SP"; State.cidade=ESTADOS["SP"][0];
+      State.casos=seedCases(); State.fila=[]; State.atual=null; State.julgando=null;
+      State.stats={j:0,a:0,prestigio:0}; State.sounds=true; State.unlocked=false;
       await saveGame(); State.scr="splash"; render();
     }else{
-      if(exists.pass){ const h=await hash(passInput.value||""); if(h!==exists.pass) return alert("Senha incorreta."); }
-      State.user=exists.user; State.passHash=exists.pass||null; Object.assign(State, exists.data); State.scr="splash"; render();
+      if(exists.pass){
+        const h=await hash(passInput.value||"");
+        if(h!==exists.pass) return alert("Senha incorreta.");
+      }
+      State.user=exists.user;
+      State.passHash=exists.pass||null;
+      Object.assign(State, exists.data);
+      State.scr="splash"; render();
     }
   };
+
   const delUser=async()=>{
-    const u=prompt("Digite o usuário que deseja remover:"); if(!u) return;
+    const u=prompt("Digite o usuário que deseja remover:");
+    if(!u) return;
     const key=await keyFor(u);
-    if(localStorage.getItem(key)){ if(confirm(`Remover o perfil "${u}" e todo o progresso?`)){localStorage.removeItem(key); alert("Removido."); render();} }
-    else alert("Perfil não encontrado.");
+    if(localStorage.getItem(key)){
+      if(confirm(`Remover o perfil "${u}" e todo o progresso?`)){
+        localStorage.removeItem(key);
+        alert("Removido.");
+        render();
+      }
+    }else alert("Perfil não encontrado.");
   };
-  const importInput=el('input',{type:'file',accept:'application/json',onchange:(e)=>{const f=e.target.files?.[0]; if(f) importGame(f);}});
+
+  const importInput=el('input',{type:'file',accept:'application/json',onchange:e=>{
+    const f=e.target.files?.[0];
+    if(f) importGame(f);
+  }});
 
   return el('div',{class:'bg-hero'},[
     el('div',{},[
       el('div',{class:'pill'},'Vale Produção apresenta'),
-      el('div',{class:'title',style:'margin:10px 0 20px'},'Jogo do Juiz 2.6'),
+      el('div',{class:'title',style:'margin:10px 0 20px'},'Jogo do Juiz 2.7'),
       el('div',{class:'wrap card',style:'max-width:520px;margin:auto'},[
         el('div',{class:'muted'},'Entre com seu usuário (criaremos se não existir):'),
         el('div',{style:'height:8px'}), userInput,
@@ -291,7 +405,7 @@ function viewLogin(){
         ]),
         knownUsers.length ? el('div',{style:'margin-top:12px'},[
           el('div',{class:'muted',style:'margin-bottom:6px'},'Perfis encontrados:'),
-          el('div',{class:'row'}, knownUsers.map(u=> el('span',{class:'pill'},u)))
+          el('div',{class:'row'}, knownUsers.map(u=>el('span',{class:'pill'},u)))
         ]) : null
       ])
     ])
@@ -304,8 +418,13 @@ function viewSplash(){
       el('div',{class:'pill'},`Perfil: ${State.user}`),
       el('div',{class:'title',style:'margin:10px 0'},'Jogo do Juiz'),
       el('div',{class:'row',style:'justify-content:center'},[
-        el('button',{class:'btn ok',onclick:()=>{State.scr="home"; saveGame().then(render)}},'Começar'),
-        el('button',{class:'btn',onclick:()=>{ if(confirm('Sair deste perfil?')){ State.scr="login"; State.user=""; render(); } }},'Trocar perfil'),
+        el('button',{class:'btn ok',onclick:()=>{State.scr="home"; saveGame().then(render);}},'Começar'),
+        el('button',{class:'btn',onclick:()=>{
+          if(confirm('Sair deste perfil?')){
+            State.scr="login"; State.user="";
+            render();
+          }
+        }},'Trocar perfil'),
         el('button',{class:'btn ghost',onclick:exportGame},'Exportar Save')
       ])
     ])
@@ -313,17 +432,28 @@ function viewSplash(){
 }
 
 function viewHome(){
-  const grid=el('div',{class:'wrap grid grid-3'},COURT_TYPES.map(t=>el('div',{class:'card'},[
-    el('div',{style:'font-size:28px'},t.icon),
-    el('div',{style:'font-weight:700'},t.title),
-    el('div',{class:'muted'},t.desc),
-    el('div',{style:'height:10px'}),
-    el('button',{class:'btn ok',onclick:()=>{State.court=t.id; State.fila=State.casos.filter(c=>c.tipo===t.id); State.scr="avatar"; saveGame().then(render);}},'Escolher')
-  ])));
+  const grid=el('div',{class:'wrap grid grid-3'},COURT_TYPES.map(t=>
+    el('div',{class:'card'},[
+      el('div',{style:'font-size:28px'},t.icon),
+      el('div',{style:'font-weight:700'},t.title),
+      el('div',{class:'muted'},t.desc),
+      el('div',{style:'height:10px'}),
+      el('button',{class:'btn ok',onclick:()=>{
+        State.court=t.id;
+        State.fila=State.casos.filter(c=>c.tipo===t.id);
+        State.scr="avatar";
+        saveGame().then(render);
+      }},'Escolher')
+    ])
+  ));
   const topbar=el('div',{class:'wrap row',style:'justify-content:space-between;margin-top:10px'},[
     el('span',{class:'pill'},`Usuário: ${State.user}`),
     el('div',{class:'row'},[
-      el('button',{class:'btn ghost',onclick:()=>{State.sounds=!State.sounds; if(State.sounds) unlockAudioOnce(); saveGame();}}, State.sounds?'🔊 Sons ON':'🔇 Sons OFF'),
+      el('button',{class:'btn ghost',onclick:()=>{
+        State.sounds=!State.sounds;
+        if(State.sounds) unlockAudioOnce();
+        saveGame();
+      }}, State.sounds?'🔊 Sons ON':'🔇 Sons OFF'),
       el('button',{class:'btn ghost',onclick:exportGame},'Exportar'),
       el('button',{class:'btn ghost',onclick:saveGame},'Salvar agora'),
       el('button',{class:'btn ghost',onclick:()=>{State.scr="login"; render();}},'Sair')
@@ -336,62 +466,106 @@ function viewAvatar(){
   const foto=el('div',{class:'card'},[
     el('div',{class:'muted'},'Foto (upload)'),
     el('input',{type:'file',accept:'image/*',onchange:e=>{
-      const f=e.target.files&&e.target.files[0]; if(!f) return;
-      const r=new FileReader(); r.onload=()=>{ State.avatar=r.result; saveGame().then(render); }; r.readAsDataURL(f);
+      const f=e.target.files&&e.target.files[0];
+      if(!f) return;
+      const r=new FileReader();
+      r.onload=()=>{ State.avatar=r.result; saveGame().then(render); };
+      r.readAsDataURL(f);
     }}),
-    el('div',{style:'margin-top:10px'}, State.avatar?el('img',{src:State.avatar,class:'avatar-lg'}):el('div',{class:'muted'},'Pré-visualização'))
+    el('div',{style:'margin-top:10px'},
+      State.avatar
+        ? el('img',{src:State.avatar,class:'avatar-lg'})
+        : el('div',{class:'muted'},'Pré-visualização')
+    )
   ]);
+
   const form=el('div',{class:'card'},[
-    el('div',{},[el('div',{class:'muted'},'Nome'),el('input',{value:State.nome,oninput:e=>{State.nome=e.target.value; saveGame();},style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'})]),
+    el('div',{},[
+      el('div',{class:'muted'},'Nome'),
+      el('input',{value:State.nome,oninput:e=>{State.nome=e.target.value; saveGame();},
+        style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'})
+    ]),
     el('div',{style:'height:8px'}),
-    el('div',{},[el('div',{class:'muted'},'Idade'),el('input',{value:State.idade,oninput:e=>{State.idade=e.target.value; saveGame();},style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'})]),
+    el('div',{},[
+      el('div',{class:'muted'},'Idade'),
+      el('input',{value:State.idade,oninput:e=>{State.idade=e.target.value; saveGame();},
+        style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'})
+    ]),
     el('div',{style:'height:8px'}),
-    el('div',{},[el('div',{class:'muted'},'Estado'),
-      el('select',{onchange:e=>{State.estado=e.target.value; State.cidade=ESTADOS[State.estado][0]; saveGame(); render();}, style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'},
-        Object.keys(ESTADOS).map(uf=>el('option',{value:uf,selected:uf===State.estado},uf)))]),
+    el('div',{},[
+      el('div',{class:'muted'},'Estado'),
+      el('select',{onchange:e=>{
+          State.estado=e.target.value;
+          State.cidade=ESTADOS[State.estado][0];
+          saveGame(); render();
+        },
+        style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'},
+        Object.keys(ESTADOS).map(uf=>el('option',{value:uf,selected:uf===State.estado},uf)))
+    ]),
     el('div',{style:'height:8px'}),
-    el('div',{},[el('div',{class:'muted'},'Cidade'),
-      el('select',{onchange:e=>{State.cidade=e.target.value; saveGame();},style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'},
-        ESTADOS[State.estado].map(c=>el('option',{value:c,selected:c===State.cidade},c)))]),
+    el('div',{},[
+      el('div',{class:'muted'},'Cidade'),
+      el('select',{onchange:e=>{State.cidade=e.target.value; saveGame();},
+        style:'width:100%;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'},
+        ESTADOS[State.estado].map(c=>el('option',{value:c,selected:c===State.cidade},c)))
+    ]),
     el('div',{style:'height:12px'}),
     el('button',{class:'btn ok',onclick:()=>{State.scr="office"; saveGame().then(render);}},'Continuar → Escritório')
   ]);
-  const curr=(State.nome&&State.idade&&State.court)?el('div',{class:'card'},[
-    el('div',{style:'font-weight:700'},'Currículo Gerado'),
-    el('div',{},`${State.nome}, ${State.idade} anos. Juiz(a) de ${COURT_TYPES.find(t=>t.id===State.court).title} em ${State.cidade}/${State.estado}.`),
-    el('ul',{},[
-      el('li',{},'Ritos processuais e padrões probatórios'),
-      el('li',{},'Conciliação quando possível'),
-      el('li',{},'Ética, imparcialidade e transparência'),
-    ])
-  ]):null;
 
-  return el('div',{class:'bg-photo',style:`background-image:url('${IMG_OFFICE}')`},[
+  const curr=(State.nome&&State.idade&&State.court)
+    ? el('div',{class:'card'},[
+        el('div',{style:'font-weight:700'},'Currículo Gerado'),
+        el('div',{},`${State.nome}, ${State.idade} anos. Juiz(a) de ${COURT_TYPES.find(t=>t.id===State.court).title} em ${State.cidade}/${State.estado}.`),
+        el('ul',{},[
+          el('li',{},'Ritos processuais e padrões probatórios'),
+          el('li',{},'Conciliação quando possível'),
+          el('li',{},'Ética, imparcialidade e transparência')
+        ])
+      ])
+    : null;
+
+  return el('div',{class:'bg-photo',style:`background-image:url('${currentOfficeBg()}')`},[
     el('div',{class:'bgfx'}),
     el('div',{class:'wrap grid grid-2'},[foto,form,curr])
   ]);
 }
 
 function viewOffice(){
-  const IAJ=State.stats.j?State.stats.a/State.stats.j:0;
+  const IAJ = State.stats.j ? State.stats.a/State.stats.j : 0;
   const header=el('div',{class:'row'},[
-    el('div',{class:'avatar'}, State.avatar?el('img',{src:State.avatar,style:'width:100%;height:100%;object-fit:cover'}):''),
-    el('div',{},[el('div',{style:'font-weight:700'},State.nome||"Juiz(a)"),
-      el('div',{class:'muted'},`${State.cidade}/${State.estado} • ${COURT_TYPES.find(t=>t.id===State.court)?.title||''}`)]),
-    el('div',{style:'flex:1'}),el('div',{class:'pill'},`IAJ ${(IAJ*100|0)}%`)
+    el('div',{class:'avatar'}, State.avatar
+      ? el('img',{src:State.avatar,style:'width:100%;height:100%;object-fit:cover'})
+      : ''),
+    el('div',{},[
+      el('div',{style:'font-weight:700'},State.nome||"Juiz(a)"),
+      el('div',{class:'muted'},`${State.cidade}/${State.estado} • ${COURT_TYPES.find(t=>t.id===State.court)?.title||''}`)
+    ]),
+    el('div',{style:'flex:1'}),
+    el('div',{class:'pill'},`IAJ ${(IAJ*100|0)}%`)
   ]);
+
   const fila=el('div',{class:'card'},[
     el('div',{style:'font-weight:700'},'Fila de Processos'),
     el('div',{class:'list'},
-      State.fila.length?State.fila.map(p=>el('div',{class:'card'},[
-        el('div',{style:'font-weight:700'},p.titulo),
-        el('div',{class:'muted'},p.resumo),
-        el('div',{class:'row'},[
-          el('button',{class:'btn',onclick:()=>{State.atual=p; saveGame().then(render);}},'Ler'),
-          el('button',{class:'btn ok',onclick:()=>{State.julgando=p; State.scr="trial"; play('#s-murmur',0.4); saveGame().then(render);}},'Julgar')
-        ])
-      ])):[el('div',{class:'muted'},'Sem processos.')])
+      State.fila.length
+        ? State.fila.map(p=>el('div',{class:'card'},[
+            el('div',{style:'font-weight:700'},p.titulo),
+            el('div',{class:'muted'},p.resumo),
+            el('div',{class:'row'},[
+              el('button',{class:'btn',onclick:()=>{State.atual=p; saveGame().then(render);}},'Ler'),
+              el('button',{class:'btn ok',onclick:()=>{
+                State.julgando=p;
+                State.scr="trial";
+                play('#s-murmur',0.4);
+                saveGame().then(render);
+              }},'Julgar')
+            ])
+          ]))
+        : [el('div',{class:'muted'},'Sem processos.')]
+    )
   ]);
+
   const met=el('div',{class:'card'},[
     el('div',{style:'font-weight:700'},'Métricas'),
     el('div',{class:'muted'},'Casos julgados'),
@@ -401,12 +575,15 @@ function viewOffice(){
     el('div',{class:'row'},[
       el('button',{class:'btn ghost',onclick:exportGame},'Exportar Save'),
       el('button',{class:'btn ghost',onclick:saveGame},'Salvar agora'),
-      el('label',{class:'btn ghost'},['Importar Save', el('input',{type:'file',accept:'application/json',onchange:(e)=>{const f=e.target.files?.[0]; if(f) importGame(f);}})])
+      el('label',{class:'btn ghost'},['Importar Save',
+        el('input',{type:'file',accept:'application/json',onchange:e=>{
+          const f=e.target.files?.[0]; if(f) importGame(f);
+        }})
+      ])
     ])
   ]);
 
-  // Carreira / STJ
-  const carreira = el('div',{class:'card'},[
+  const carreira=el('div',{class:'card'},[
     el('div',{style:'font-weight:700'},'Carreira'),
     el('div',{class:'muted'},'Prestígio'),
     el('div',{class:'progress'},[el('span',{style:`width:${clamp(State.stats.prestigio||0,0,100)}%`})]),
@@ -417,33 +594,47 @@ function viewOffice(){
   const topbar=el('div',{class:'wrap row',style:'justify-content:space-between;margin-bottom:8px'},[
     el('span',{class:'pill'},`Usuário: ${State.user}`),
     el('div',{class:'row'},[
-      el('button',{class:'btn ghost',onclick:()=>{State.sounds=!State.sounds; if(State.sounds) unlockAudioOnce(); saveGame();}}, State.sounds?'🔊 Sons ON':'🔇 Sons OFF'),
-      el('button',{class:'btn',onclick:()=>{ State.scr="home"; saveGame().then(render); }},'Menu')
+      el('button',{class:'btn ghost',onclick:()=>{
+        State.sounds=!State.sounds;
+        if(State.sounds) unlockAudioOnce();
+        saveGame();
+      }}, State.sounds?'🔊 Sons ON':'🔇 Sons OFF'),
+      el('button',{class:'btn',onclick:()=>{State.scr="home"; saveGame().then(render);}},'Menu')
     ])
   ]);
 
-  return el('div',{class:'bg-photo',style:`background-image:url('${IMG_OFFICE}')`},[
+  return el('div',{class:'bg-photo',style:`background-image:url('${currentOfficeBg()}')`},[
     el('div',{class:'bgfx'}),
     topbar,
-    el('div',{class:'wrap grid grid-2'},[el('div',{},[header,fila]),el('div',{},[met,carreira])])
+    el('div',{class:'wrap grid grid-2'},[
+      el('div',{},[header,fila]),
+      el('div',{},[met,carreira])
+    ])
   ]);
 }
 
+/* Provinha STJ */
 function trySTJ(){
-  const q = [
-    {p:"Padrão probatório em criminal para condenação:", a:["Preponderância","Além de dúvida razoável","Íntima convicção do juiz"], ok:1},
-    {p:"Em família, decisões devem observar principalmente:", a:["Vontade dos pais","Interesse superior da criança","Capacidade econômica do genitor"], ok:1},
-    {p:"Em trabalhista, ônus da prova sobre horas extras:", a:["Sempre do empregado","Sempre do empregador","Depende do caso e registros de ponto"], ok:2},
+  const q=[
+    {p:"Padrão probatório em criminal para condenação:",a:["Preponderância","Além de dúvida razoável","Íntima convicção"],ok:1},
+    {p:"Em família, decisões devem observar principalmente:",a:["Vontade dos pais","Interesse superior da criança","Capacidade econômica"],ok:1},
+    {p:"Em trabalhista, ônus da prova de horas extras:",a:["Sempre do empregado","Sempre do empregador","Depende dos registros e do caso"],ok:2}
   ];
   let ac=0;
   for(const i in q){
-    const x=q[i]; const ans=prompt(`${parseInt(i)+1}) ${x.p}\n0) ${x.a[0]}\n1) ${x.a[1]}\n2) ${x.a[2]}\n\nResponda com 0,1,2:`);
+    const x=q[i];
+    const ans=prompt(`${parseInt(i)+1}) ${x.p}\n0) ${x.a[0]}\n1) ${x.a[1]}\n2) ${x.a[2]}\n\nResponda 0, 1 ou 2:`);
     if(ans!==null && String(ans).trim()==String(x.ok)) ac++;
   }
   alert(`Você acertou ${ac}/${q.length}.`);
-  if(ac>=2){ State.stats.prestigio = clamp((State.stats.prestigio||0)+20,0,100); alert("Aprovado! Prestígio aumentado."); }
+  if(ac>=2){
+    State.stats.prestigio = clamp((State.stats.prestigio||0)+20,0,100);
+    alert("Aprovado! Prestígio aumentado — seu gabinete agora lembra o STJ.");
+  }
   saveGame(); render();
 }
+
+/* Chat / Júri */
 
 function avatarBadge(kind){
   const txt = kind==='A'?'MP':'DEF';
@@ -461,18 +652,21 @@ function addBubble(container, speaker, text){
     ])
   ]);
   container.appendChild(bubble);
-  const node = bubble.querySelector('.content');
-  typeInto(node, text, 11);
-  container.scrollTop = container.scrollHeight;
+  const node=bubble.querySelector('.content');
+  typeInto(node,text,11);
+  container.scrollTop=container.scrollHeight;
 }
 
 function viewTrial(){
-  const c=State.julgando; if(!c) return el('div',{class:'wrap'},'Erro: nenhum caso.');
-  const chat = el('div',{class:'card'},[
-    el('div',{style:'font-weight:700; margin-bottom:8px'},'Audiência'),
+  const c=State.julgando;
+  if(!c) return el('div',{class:'wrap'},'Erro: nenhum caso.');
+
+  const chat=el('div',{class:'card'},[
+    el('div',{style:'font-weight:700;margin-bottom:8px'},'Audiência'),
     el('div',{class:'chat',id:'chatbox',style:'max-height:340px;overflow:auto'})
   ]);
-  const juryBox = el('div',{class:'card'},[
+
+  const juryBox=el('div',{class:'card'},[
     el('div',{style:'font-weight:700'},'Júri Popular (12)'),
     el('div',{class:'jury',id:'jury'}),
     el('div',{class:'row',style:'margin-top:8px'},[
@@ -481,10 +675,11 @@ function viewTrial(){
     ])
   ]);
 
-  const jurados=[]; for(let i=1;i<=12;i++) jurados.push({id:i,voto:null,certeza:0});
-  const juryGrid = juryBox.querySelector('#jury');
+  const jurados=[];
+  for(let i=1;i<=12;i++) jurados.push({id:i,voto:null,certeza:0});
+  const juryGrid=juryBox.querySelector('#jury');
   jurados.forEach(j=>{
-    const item = el('div',{class:'juror',id:`J${j.id}`},[
+    const item=el('div',{class:'juror',id:`J${j.id}`},[
       el('div',{},`J${String(j.id).padStart(2,'0')}`),
       el('div',{class:'bar'},[el('span',{style:`width:0%;background:#777`})])
     ]);
@@ -494,33 +689,35 @@ function viewTrial(){
   function deliberar(){
     let g=0,i=0;
     jurados.forEach(j=>{
-      j.certeza = Math.round(50 + Math.random()*50);
-      j.voto = Math.random() < 0.58;
-      const bar = document.querySelector(`#J${j.id} .bar>span`);
-      bar.style.width = `${j.certeza}%`;
-      bar.style.background = j.voto ? '#ff6b81' : '#30d088';
+      j.certeza=Math.round(50+Math.random()*50);
+      j.voto=Math.random()<0.58;
+      const bar=document.querySelector(`#J${j.id} .bar>span`);
+      bar.style.width=`${j.certeza}%`;
+      bar.style.background=j.voto?'#ff6b81':'#30d088';
       if(j.voto) g++; else i++;
     });
-    $('#jurySum').textContent = `Guilty: ${g} • Not guilty: ${i}`;
+    $('#jurySum').textContent=`Guilty: ${g} • Not guilty: ${i}`;
     play('#s-murmur',0.35);
   }
 
-  const inputRow = el('div',{class:'row'},[
-    el('input',{id:'q',placeholder:'Pergunta do juiz… (atalho: Enter) — A: acusação, D: defesa, C: condenar, B: absolver',style:'flex:1;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'}),
+  const inputRow=el('div',{class:'row'},[
+    el('input',{id:'q',placeholder:'Pergunta do juiz… (atalho: Enter) — A: acusação, D: defesa, C: condenar, B: absolver',
+      style:'flex:1;padding:10px;border-radius:10px;border:1px solid #ffffff28;background:#0e0f12;color:#fff'}),
     el('button',{class:'btn',onclick:ask},'Perguntar')
   ]);
 
   async function ask(){
-    const q = $('#q').value.trim(); if(!q) return;
+    const q=$('#q').value.trim();
+    if(!q) return;
     $('#q').value='';
-    const target = Math.random()<.5?'acusacao':'defesa';
-    const resp = iaFala(target, c, q);
-    addBubble($('#chatbox'), target, resp);
+    const target=Math.random()<.5?'acusacao':'defesa';
+    const resp=iaFala(target,c,q);
+    addBubble($('#chatbox'),target,resp);
     saveGame();
   }
   async function ouvir(ag){
-    const resp = iaFala(ag, c, "");
-    addBubble($('#chatbox'), ag, resp);
+    const resp=iaFala(ag,c,"");
+    addBubble($('#chatbox'),ag,resp);
     saveGame();
   }
   function veredito(culp){
@@ -536,33 +733,33 @@ function viewTrial(){
 
   window.onkeydown = (ev)=>{
     if(State.scr!=="trial") return;
-    if(ev.key==='a' || ev.key==='A'){ ouvir('acusacao'); }
-    if(ev.key==='d' || ev.key==='D'){ ouvir('defesa'); }
-    if(ev.key==='c' || ev.key==='C'){ veredito(true); }
-    if(ev.key==='b' || ev.key==='B'){ veredito(false); }
-    if(ev.key==='Enter'){ ask(); }
+    if(ev.key==='a' || ev.key==='A') ouvir('acusacao');
+    if(ev.key==='d' || ev.key==='D') ouvir('defesa');
+    if(ev.key==='c' || ev.key==='C') veredito(true);
+    if(ev.key==='b' || ev.key==='B') veredito(false);
+    if(ev.key==='Enter') ask();
   };
 
-  const dossie = el('div',{class:'card'},[
+  const dossie=el('div',{class:'card'},[
     el('div',{style:'font-weight:700'},'Dossiê (Provas)'),
     el('ul',{},c.provas.map(p=>el('li',{},`[${p.id}] ${p.tipo}: ${p.conteudo}`)))
   ]);
 
-  const controles = el('div',{class:'row',style:'margin:10px 0'},[
-    el('button',{class:'btn',onclick:()=>{ouvir('acusacao'); play('#s-murmur',0.25);}},'Palavra à Acusação  (A)'),
-    el('button',{class:'btn',onclick:()=>{ouvir('defesa'); play('#s-murmur',0.25);}},'Ouvir Defesa  (D)'),
-    el('button',{class:'btn ok',onclick:()=>veredito(true)},'Condenar  (C)'),
-    el('button',{class:'btn',onclick:()=>veredito(false)},'Absolver  (B)'),
-    el('button',{class:'btn ghost',onclick:()=>{ State.scr="office"; saveGame().then(render); }},'Voltar'),
+  const controles=el('div',{class:'row',style:'margin:10px 0'},[
+    el('button',{class:'btn',onclick:()=>{ouvir('acusacao'); play('#s-murmur',0.25);}},'Palavra à Acusação (A)'),
+    el('button',{class:'btn',onclick:()=>{ouvir('defesa'); play('#s-murmur',0.25);}},'Ouvir Defesa (D)'),
+    el('button',{class:'btn ok',onclick:()=>veredito(true)},'Condenar (C)'),
+    el('button',{class:'btn',onclick:()=>veredito(false)},'Absolver (B)'),
+    el('button',{class:'btn ghost',onclick:()=>{State.scr="office"; saveGame().then(render);}},'Voltar'),
     el('button',{class:'btn ghost',onclick:saveGame},'Salvar agora')
   ]);
 
-  const title = el('div',{class:'wrap row',style:'justify-content:space-between;margin-bottom:8px'},[
+  const title=el('div',{class:'wrap row',style:'justify-content:space-between;margin-bottom:8px'},[
     el('span',{class:'pill'},`Julgando: ${c.titulo}`),
-    el('span',{class:'pill'}, COURT_TYPES.find(t=>t.id===State.court)?.title || '')
+    el('span',{class:'pill'},COURT_TYPES.find(t=>t.id===State.court)?.title || '')
   ]);
 
-  const leftCol = el('div',{},[
+  const leftCol=el('div',{},[
     el('div',{class:'title'},'Sala de Julgamento'),
     controles,
     chat,
@@ -575,7 +772,7 @@ function viewTrial(){
   return el('div',{class:'bg-photo',style:`background-image:url('${IMG_COURT}')`},[
     el('div',{class:'bgfx'}),
     title,
-    el('div',{class:'wrap grid grid-2'},[ leftCol, dossie ])
+    el('div',{class:'wrap grid grid-2'},[leftCol,dossie])
   ]);
 }
 
