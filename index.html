@@ -33,13 +33,14 @@
   /* Telas sem imagem */
   .bg-hero{background:radial-gradient(1000px 500px at 50% -10%,#ffffff22,transparent),linear-gradient(180deg,#0b0b0d 0%,#0b0b0d 20%,#0b0b0d 100%);min-height:100vh;display:grid;place-items:center;text-align:center}
 
-  /* Fundos com foto local + overlays (garante que a imagem apareça mesmo com CORS off) */
+  /* Fundos com foto local */
   .bg-photo{min-height:100vh;position:relative;background:#0b0b0d center/cover no-repeat}
   .bgfx{position:absolute;inset:0;pointer-events:none;
         background:
         radial-gradient(1100px 600px at 50% 0%, rgba(0,0,0,.55), transparent 60%),
         linear-gradient(180deg, rgba(0,0,0,.40), rgba(0,0,0,.75));}
-  /* SafeBoot overlay */
+
+  /* SafeBoot */
   .safe-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(180deg,#0b0b0d,#141419);z-index:9999}
   .safe-card{max-width:720px;background:#141419;border:1px solid #ffffff22;border-radius:16px;padding:20px;text-align:center}
   .safe-ok{color:#42e6a4;font-weight:700;margin-top:6px} .safe-err{color:#ff5d7a;white-space:pre-wrap;margin-top:10px}
@@ -98,9 +99,9 @@
 (function(){
 "use strict";
 
-/* >>> PATHS DAS IMAGENS LOCAIS (adicione no repositório) <<< */
-const IMG_OFFICE = "img/office.jpg"; // gabinete do juiz
-const IMG_COURT  = "img/court.jpg";  // sala de julgamento
+/* >>> IMAGENS LOCAIS EM PNG <<< */
+const IMG_OFFICE = "img/office.png";
+const IMG_COURT  = "img/court.png";
 
 /* Utils */
 const $ = sel => document.querySelector(sel);
